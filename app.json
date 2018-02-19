@@ -1,5 +1,12 @@
 {
   "expo": {
+    "name": "Combustibles RD",
+    "description": "Aplicacion para ver los precios de combustibles actuales en República Dominicana y cómo se comparan con la semana anterior.",
+    "slug": "combustibles",
+    "privacy": "public",
+    "version": "1.0.0",
+    "githubUrl": "https://github.com/pedroslopez/PreciosCombustiblesRD",
+    "assetBundlePatterns": ["assets/fonts/*"],
     "sdkVersion": "25.0.0"
   }
 }

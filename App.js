@@ -6,7 +6,7 @@ import PriceRow from './components/PriceRow';
 
 const cheerio = require('react-native-cheerio');
 
-const requestUrl = 'https://www.mic.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/combustibles';
+const requestUrl = 'https://www.micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/combustibles';
 
 export default class App extends React.Component {
   state = {
