@@ -1,6 +1,6 @@
 import React from 'react';
 import { Font } from 'expo';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 
 import PriceRow from './components/PriceRow';
 
@@ -76,7 +76,7 @@ export default class App extends React.Component {
                                     lastPrice={item.lastPrice} />
                       }
         />
-      </View>) : <View style={styles.loading}><Text>Loading...</Text></View>
+      </View>) : <View style={styles.loading}><ActivityIndicator size="large" color="#4E566F"/></View>
     );
   }
 }
@@ -101,6 +101,8 @@ const styles = StyleSheet.create({
     fontFamily: 'poppins-regular'
   },
   loading: {
+    flex: 1,
+    backgroundColor: '#282F45',
     alignItems: 'center',
     justifyContent: 'center'
   },
