@@ -125,7 +125,7 @@ export default class App extends React.Component {
                     renderItem={({item}) => <PriceRow 
                                             title={item.name}
                                             price={item.price}
-                                            lastPrice={item.lastPrice} />
+                                            diff={parseFloat(item.price - item.lastPrice)} />
                                 }
                 />
                 </View>) : 

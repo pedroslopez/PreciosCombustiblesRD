@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     pill: {
+        backgroundColor: '#1C1C1C',
+        borderRadius: 5,
+        alignItems: 'center',
+        margin: 5,
+        padding: 2
+    },
+    greenPill: {
         backgroundColor: '#3DBC72',
         borderRadius: 5,
         alignItems: 'center',
@@ -49,7 +56,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PriceRow = ({title, price, lastPrice}) => (
+export default PriceRow = ({title, price, diff}) => (
     <View style={styles.container}>
         <View style={styles.firstCell}>
             <Text style={[styles.textContent, styles.title]}>{title}</Text>
@@ -58,8 +65,8 @@ export default PriceRow = ({title, price, lastPrice}) => (
             <Text style={styles.textContent}>{price.toFixed(2)}</Text>
         </View>
         <View style={styles.priceCell}>
-            <View style={(price-lastPrice) > 0 ? styles.redPill : styles.pill}>
-                <Text style={styles.textContent}>{(price - lastPrice).toFixed(2)}</Text>
+            <View style={diff > 0 ? styles.redPill : (diff < 0 ? styles.greenPill : styles.pill)}>
+                <Text style={styles.textContent}>{diff > 0 ? '+' : ''}{diff.toFixed(2)}</Text>
             </View>
         </View>
     </View>
