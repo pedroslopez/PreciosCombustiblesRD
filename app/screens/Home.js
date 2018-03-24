@@ -9,39 +9,6 @@ import PriceRow from '../components/PriceRow';
 const cheerio = require('react-native-cheerio');
 
 const requestUrl = 'https://www.micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/combustibles';
-const PUSH_ENDPOINT = 'https://combustibles.herokuapp.com/api/notifications/token/';
-
-async function registerForPushNotificationsAsync() {
-  const { status: existingStatus } = await Permissions.getAsync(
-    Permissions.NOTIFICATIONS
-  );
-  let finalStatus = existingStatus;
-
-  // only ask if permissions have not already been determined, because
-  // iOS won't necessarily prompt the user a second time.
-  if (existingStatus !== 'granted') {
-    // Android remote notification permissions are granted during the app
-    // install, so this will only ask on iOS
-    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    finalStatus = status;
-  }
-
-  // Stop here if the user did not grant permissions
-  if (finalStatus !== 'granted') {
-    return;
-  }
-
-  // Get the token that uniquely identifies this device
-  let token = await Notifications.getExpoPushTokenAsync();
-
-  // POST the token to your backend server from where you can retrieve it to send push notifications.
-  return fetch(PUSH_ENDPOINT + token, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-    }
-  });
-}
 
 export default class App extends React.Component {
   state = {
@@ -49,8 +16,6 @@ export default class App extends React.Component {
     dataLoaded: false,
   }
   async componentDidMount() {
-    //await registerForPushNotificationsAsync();
-
     await Font.loadAsync({
       'poppins-bold': require('../../assets/fonts/Poppins-Bold.ttf'),
       'poppins-medium': require('../../assets/fonts/Poppins-Medium.ttf'),
