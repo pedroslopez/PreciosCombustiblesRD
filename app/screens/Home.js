@@ -8,7 +8,7 @@ import PriceRow from '../components/PriceRow';
 
 const cheerio = require('react-native-cheerio');
 
-const requestUrl = 'https://www.micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/combustibles';
+const requestUrl = 'https://micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/precios-de-combustibles';
 
 export default class App extends React.Component {
   state = {
@@ -28,17 +28,20 @@ export default class App extends React.Component {
     .then((html) => {
       let $ = cheerio.load(html);
 
-      // get date range title
-      this.setState({title: $('.uk-grid.uk-grid-collapse.uk-visible-large .uk-text-small').first().text()});
-
-      // get data object
       function findTextAndReturnRemainder(target, variable){
-          var chopFront = target.substring(target.search(variable)+variable.length,target.length);
-          var result = chopFront.substring(0,chopFront.search(";"));
-          return result;
+        var chopFront = target.substring(target.search(variable)+variable.length,target.length);
+        var result = chopFront.substring(0,chopFront.search(";"));
+        return result;
       }
 
       let scriptContent = $('script[type="text/javascript"]:not([src])').first().html();
+
+      // get date range title
+      let findAndCleanTitle = findTextAndReturnRemainder(scriptContent, "window.ArtDataData16 = ");
+      let dataResult = JSON.parse(findAndCleanTitle);
+      this.setState({title: dataResult[0].rangoDeVigencia});
+
+      // get data object
       let findAndClean = findTextAndReturnRemainder(scriptContent, "var ArtDataChartDefinition13 = ");
       let result = JSON.parse(findAndClean);
 
@@ -82,7 +85,7 @@ export default class App extends React.Component {
                         </TouchableOpacity>
                     </View>
                 
-                <Text style={styles.weekTitle}>Semana{this.state.title}</Text>
+                <Text style={styles.weekTitle}>{this.state.title}</Text>
 
                 <FlatList 
                     style={styles.list}
