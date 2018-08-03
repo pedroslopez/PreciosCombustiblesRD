@@ -8,7 +8,8 @@ import PriceRow from '../components/PriceRow';
 
 const cheerio = require('react-native-cheerio');
 
-const requestUrl = 'https://micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/precios-de-combustibles';
+const requestUrl = 'https://micm.gob.do/direcciones/hidrocarburos/avisos-semanales-de-precios/combustibles';
+const titleRequestUrl = 'https://micm.gob.do/combustibleRSS.xml';
 
 export default class App extends React.Component {
   state = {
@@ -22,25 +23,30 @@ export default class App extends React.Component {
       'poppins-regular': require('../../assets/fonts/Poppins-Regular.ttf'),
     });
 
+    function findTextAndReturnRemainder(target, variable){
+        var chopFront = target.substring(target.search(variable)+variable.length,target.length);
+        var result = chopFront.substring(0,chopFront.search(";"));
+        return result;
+    }
+
+
+    // Request Title
+    fetch(titleRequestUrl)
+    .then((response) => response.text())
+    .then((html) => {
+        let $ = cheerio.load(html, {xmlMode: true});
+        let title = $('item title').text().split('emana del ');
+        title = title.length > 1 ? title[1] : '';
+        this.setState({title});
+    });
+    
     // Request
     fetch(requestUrl)
     .then((response) => response.text())
     .then((html) => {
       let $ = cheerio.load(html);
-
-      function findTextAndReturnRemainder(target, variable){
-        var chopFront = target.substring(target.search(variable)+variable.length,target.length);
-        var result = chopFront.substring(0,chopFront.search(";"));
-        return result;
-      }
-
       let scriptContent = $('script[type="text/javascript"]:not([src])').first().html();
-
-      // get date range title
-      let findAndCleanTitle = findTextAndReturnRemainder(scriptContent, "window.ArtDataData16 = ");
-      let dataResult = JSON.parse(findAndCleanTitle);
-      this.setState({title: dataResult[0].rangoDeVigencia});
-
+      
       // get data object
       let findAndClean = findTextAndReturnRemainder(scriptContent, "var ArtDataChartDefinition13 = ");
       let result = JSON.parse(findAndClean);

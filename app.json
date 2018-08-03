@@ -6,7 +6,14 @@
     "privacy": "public",
     "version": "1.0.0",
     "githubUrl": "https://github.com/pedroslopez/PreciosCombustiblesRD",
+    "icon": "./assets/app-icon.png",
     "assetBundlePatterns": ["assets/fonts/*"],
-    "sdkVersion": "25.0.0"
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "me.pedroslopez.combustibles"
+    },
+    "android": {
+      "package": "me.pedroslopez.combustibles"
+    }
   }
 }
